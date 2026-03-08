@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF9F0">
+
+    <View
+        android:id="@+id/topGradient"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/gradient_top" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Кого сегодня послушаем?"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#F06292"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Выбери голос, который тебе сегодня ближе"
+            android:textSize="14sp"
+            android:textColor="#887A7A"
+            android:layout_marginBottom="32dp"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupPersonality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radioFriend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Подружка\n(Поддержка и уют)"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_selection_card"
+                android:buttonTint="#F06292"/>
+
+            <RadioButton
+                android:id="@+id/radioSister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Старшая сестра\n(Забота и мудрость)"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_selection_card"
+                android:buttonTint="#F06292"/>
+
+            <RadioButton
+                android:id="@+id/radioCoach"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Коуч\n(Энергия и границы)"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_selection_card"
+                android:buttonTint="#F06292"/>
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Сохранить выбор"
+            android:textSize="18sp"
+            android:layout_marginBottom="52dp"
+            android:textAllCaps="false"
+            android:backgroundTint="#F06292"
+            app:cornerRadius="28dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
