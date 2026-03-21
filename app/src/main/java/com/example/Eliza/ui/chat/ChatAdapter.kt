@@ -1,16 +1,25 @@
 package com.example.Eliza.ui.chat
 
+import android.content.Intent
+import android.net.Uri
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Eliza.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.regex.Pattern
 
-class ChatAdapter(private val messages: MutableList<Message>) :
+class ChatAdapter(private val messages: List<Message>) :
     RecyclerView.Adapter<ChatAdapter.MessageViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -35,6 +44,37 @@ class ChatAdapter(private val messages: MutableList<Message>) :
 
         fun bind(message: Message) {
             tvMessage.text = message.text
+            // Ищем текст после "по запросу" в любых кавычках
+            val pattern = Pattern.compile("по запросу\\s*[\"']([^\"']+)[\"']")
+            val matcher = pattern.matcher(message.text)
+
+            if (matcher.find()) {
+                val query = matcher.group(1)
+                val spannable = SpannableString(message.text)
+                val start = matcher.start(1) - 1
+                val end = matcher.end(1) + 1
+
+                val clickableSpan = object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        val url = "https://www.youtube.com/results?search_query=${Uri.encode(query)}"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        widget.context.startActivity(intent)
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        super.updateDrawState(ds)
+                        ds.color = ContextCompat.getColor(itemView.context, R.color.primary_pink)
+                        ds.isUnderlineText = true
+                    }
+                }
+                spannable.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                tvMessage.text = spannable
+                tvMessage.movementMethod = LinkMovementMethod.getInstance()
+            } else {
+                // Если подсказки нет, делаем обычные ссылки кликабельными
+                android.text.util.Linkify.addLinks(tvMessage, android.text.util.Linkify.WEB_URLS)
+            }
+
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             tvTime.text = timeFormat.format(Date(message.timestamp))
         }

@@ -154,6 +154,7 @@ class ChatFragment : Fragment() {
                 put("personality", contextData.personality)
                 put("message", userMessage)
                 put("history", historyArray)
+                put("isBirthday", contextData.isBirthday)
             }
 
             val request = Request.Builder()
@@ -198,7 +199,8 @@ class ChatFragment : Fragment() {
             PersonalityType.SISTER -> "sister"
             PersonalityType.COACH -> "coach"
         }
-        return ContextData(name, mood, cyclePhase, personalityStr)
+        val isBirthday = userDataManager.isBirthdayToday()
+        return ContextData(name, mood, cyclePhase, personalityStr, isBirthday)
     }
 
     private suspend fun getTodayMood(): Int {
@@ -274,6 +276,7 @@ class ChatFragment : Fragment() {
         val name: String,
         val mood: Int,
         val cyclePhase: String,
-        val personality: String
+        val personality: String,
+        val isBirthday: Boolean
     )
 }
