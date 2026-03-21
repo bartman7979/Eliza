@@ -6,6 +6,12 @@
     app:startDestination="@id/mainFragment">
 
     <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.Eliza.ui.about.AboutFragment"
+        android:label="О приложении"
+        tools:layout="@layout/fragment_about" />
+
+    <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.Eliza.ui.main.MainFragment"
         android:label="Главная"
@@ -42,10 +48,18 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.Eliza.ui.chat.ChatFragment"
+        android:label="Чат"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
         android:id="@+id/diaryEditFragment"
         android:name="com.example.Eliza.ui.diary.DiaryEditFragment"
         android:label="Новая запись"
         tools:layout="@layout/fragment_diary_edit">
+
+
 
         <argument
             android:name="entryId"

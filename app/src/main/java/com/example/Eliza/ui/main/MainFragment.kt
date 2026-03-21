@@ -66,6 +66,12 @@ class MainFragment : Fragment() {
         binding.ivLamp.setOnClickListener {
             findNavController().navigate(R.id.counterFragment)
         }
+        binding.ivChat.setOnClickListener {
+            findNavController().navigate(R.id.chatFragment)
+        }
+        binding.ivAbout.setOnClickListener {
+            findNavController().navigate(R.id.aboutFragment)
+        }
 
         // Наблюдение за сменой фона (подписка остаётся здесь)
         lifecycleScope.launch {

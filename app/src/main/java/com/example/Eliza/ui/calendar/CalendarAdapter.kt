@@ -1,11 +1,13 @@
 package com.example.Eliza.ui.calendar
 
 import android.graphics.Color
+import android.graphics.drawable.LayerDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -33,55 +35,39 @@ class CalendarAdapter(
         private val tvDay: TextView = itemView.findViewById(R.id.tvDay)
 
         fun bind(day: DayItem) {
-            Log.d("CalendarAdapter", "Binding day: ${day.dayOfMonth}, isMenstruation=${day.isMenstruation}, isPredicted=${day.isPredicted}, isOvulation=${day.isOvulation}, isFertile=${day.isFertile}, isToday=${day.isToday}")
             tvDay.text = day.dayOfMonth.toString()
             tvDay.alpha = if (day.isCurrentMonth) 1.0f else 0.3f
 
-            // Сбрасываем стили перед отрисовкой
-            tvDay.setBackgroundResource(0)
-            tvDay.setTextColor(Color.BLACK)
+            val bgRes = when {
+                day.isMenstruation -> R.drawable.bg_cycle_day_menstruation
+                day.isOvulation -> R.drawable.bg_cycle_day_ovulation
+                day.isFertile -> R.drawable.bg_cycle_day_fertile
+                day.isPredicted -> R.drawable.bg_cycle_day_predicted
+                else -> R.drawable.bg_transparent
+            }
 
+            if (day.isToday) {
+                // Накладываем обводку поверх основного фона
+                val layers = arrayOf(
+                    ContextCompat.getDrawable(tvDay.context, bgRes)!!,
+                    ContextCompat.getDrawable(tvDay.context, R.drawable.bg_today)!!
+                )
+                val layerDrawable = LayerDrawable(layers)
+                tvDay.background = layerDrawable
+            } else {
+                tvDay.setBackgroundResource(bgRes)
+            }
+
+            // Устанавливаем цвет текста (можно оставить как было)
             when {
-                // 1. Реальная менструация (Красный)
-                day.isMenstruation -> {
-                    tvDay.setBackgroundResource(R.drawable.bg_cycle_day_menstruation)
-                    tvDay.setTextColor(Color.WHITE)
-                }
-
-                // 2. Прогноз менструации (Розовый)
-                day.isPredicted -> {
-                    tvDay.setBackgroundResource(R.drawable.bg_cycle_day_predicted)
-                    tvDay.setTextColor(Color.parseColor("#F06292")) // Ярко-розовый текст
-                }
-
-                // 3. День овуляции (Голубой)
-                day.isOvulation -> {
-                    // Если нет drawable, можно временно закрасить цветом,
-                    // но лучше создать bg_cycle_day_ovulation.xml
-                    tvDay.setBackgroundResource(R.drawable.bg_cycle_day_ovulation)
-                    tvDay.setTextColor(Color.parseColor("#1976D2")) // Насыщенный синий
-                }
-
-                // 4. Благоприятные дни (Зеленый)
-                day.isFertile -> {
-                    tvDay.setBackgroundResource(R.drawable.bg_cycle_day_fertile)
-                    tvDay.setTextColor(Color.parseColor("#388E3C")) // Темно-зеленый
-                }
-
-                // 5. Сегодняшний день (если нет других событий)
-                day.isToday -> {
-                    tvDay.setBackgroundResource(R.drawable.bg_today)
-                    tvDay.setTextColor(Color.BLACK)
-                }
-
-                // 6. Обычный день
-                else -> {
-                    tvDay.setTextColor(if (day.isCurrentMonth) Color.BLACK else Color.LTGRAY)
-                }
+                day.isMenstruation || day.isOvulation -> tvDay.setTextColor(Color.WHITE)
+                else -> tvDay.setTextColor(Color.BLACK)
             }
 
             itemView.setOnClickListener {
-                if (day.isCurrentMonth) onDayClick(day)
+                if (day.isCurrentMonth) {
+                    onDayClick(day)
+                }
             }
         }
 

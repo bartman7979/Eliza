@@ -10,4 +10,6 @@
     <string name="add_entry">Добавить запись</string>
     <string name="prev_month">Предыдущий месяц</string>
     <string name="next_month">Следующий месяц</string>
+    <string name="about">О приложении</string>
+    <string name="logo">Логотип</string>
 </resources>

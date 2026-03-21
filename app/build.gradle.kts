@@ -79,6 +79,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation("com.squareup:javapoet:1.13.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("org.json:json:20230227")
 
     // Testing
     testImplementation(libs.junit)
