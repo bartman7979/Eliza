@@ -1,5 +1,6 @@
 package com.example.Eliza.ui.diary
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,16 @@ import com.example.Eliza.data.local.database.AppDatabase
 import com.example.Eliza.data.repository.DiaryRepository
 import com.example.Eliza.databinding.FragmentDiaryEditBinding
 import kotlinx.coroutines.launch
+import android.content.Intent
+import android.provider.MediaStore
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
+import java.io.File
+import java.io.FileOutputStream
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Environment
+import java.io.ByteArrayOutputStream
 
 class DiaryEditFragment : Fragment() {
 
@@ -22,6 +33,36 @@ class DiaryEditFragment : Fragment() {
 
     private lateinit var viewModel: DiaryEditViewModel
     private var entryId: Long = -1L
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val imageUri = data?.data
+            imageUri?.let { saveImageToInternalStorage(it) }
+        }
+    }
+    private fun saveImageToInternalStorage(uri: Uri) {
+        try {
+            val inputStream = requireContext().contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream?.close()
+
+            // Сжимаем и сохраняем
+            val filename = "img_${System.currentTimeMillis()}.jpg"
+            val file = File(requireContext().filesDir, "images")
+            if (!file.exists()) file.mkdirs()
+            val outFile = File(file, filename)
+            val fos = FileOutputStream(outFile)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos)
+            fos.close()
+
+            // Сохраняем путь в список (пока в памяти)
+            photoPaths.add(outFile.absolutePath)
+            // TODO: обновить UI (показать миниатюру)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,6 +118,10 @@ class DiaryEditFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "Введите текст", Toast.LENGTH_SHORT).show()
             }
+        }
+        binding.btnAddPhoto.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            pickImageLauncher.launch(intent)
         }
     }
 

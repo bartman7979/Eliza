@@ -20,6 +20,11 @@ import com.example.Eliza.utils.ImageManager
 import com.example.Eliza.utils.MoodColorCalculator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Context
+import android.util.Log
+import com.example.Eliza.MoodWidgetProvider
 
 class MainFragment : Fragment() {
 
@@ -84,7 +89,25 @@ class MainFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.balance.collectLatest { balance ->
                 updateLampColor(balance)
+                saveBalanceForWidget(balance)
             }
+        }
+    }
+
+    private fun saveBalanceForWidget(balance: Int) {
+        try {
+            val prefs = requireContext().getSharedPreferences("widget_prefs", Context.MODE_PRIVATE)
+            prefs.edit().putInt("balance", balance).apply()
+
+            val appWidgetManager = AppWidgetManager.getInstance(requireContext())
+            val appWidgetIds = appWidgetManager.getAppWidgetIds(
+                ComponentName(requireContext(), MoodWidgetProvider::class.java)
+            )
+            for (id in appWidgetIds) {
+                MoodWidgetProvider.updateAppWidget(requireContext(), appWidgetManager, id)
+            }
+        } catch (e: Exception) {
+            Log.e("MainFragment", "Error updating widget", e)
         }
     }
 

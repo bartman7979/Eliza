@@ -1,10 +1,14 @@
 package com.example.Eliza.ui.main
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.Eliza.MoodWidgetProvider
 import com.example.Eliza.data.repository.MoodRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
