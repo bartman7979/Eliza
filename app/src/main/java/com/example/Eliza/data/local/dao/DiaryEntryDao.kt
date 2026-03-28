@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface DiaryEntryDao {
 
     @Insert
-    suspend fun insert(entry: DiaryEntry)
+    suspend fun insert(entry: DiaryEntry): Long
 
     @Update
     suspend fun update(entry: DiaryEntry)
@@ -25,4 +25,5 @@ interface DiaryEntryDao {
 
     @Query("SELECT * FROM diary_entries WHERE id = :id")
     suspend fun getEntryById(id: Long): DiaryEntry?
+
 }

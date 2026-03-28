@@ -12,4 +12,8 @@
     <string name="next_month">Следующий месяц</string>
     <string name="about">О приложении</string>
     <string name="logo">Логотип</string>
+    <string name="photo_thumbnail">Миниатюра фото</string>
+    <string name="delete_photo">Удалить фото</string>
+    <string name="photo">Фото</string>
+    <string name="fullscreen_image">Полноэкранное изображение</string>
 </resources>

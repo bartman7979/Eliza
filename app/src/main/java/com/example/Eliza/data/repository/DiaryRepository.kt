@@ -16,18 +16,21 @@ class DiaryRepository(
 
     suspend fun getEntryById(id: Long): DiaryEntry? {
         Log.d("DiaryRepo", "getEntryById: $id")
-        val result = diaryEntryDao.getEntryById(id)
-        Log.d("DiaryRepo", "getEntryById result: $result")
-        return result
+        return try {
+            val result = diaryEntryDao.getEntryById(id)
+            Log.d("DiaryRepo", "getEntryById result: $result")
+            result
+        } catch (e: Exception) {
+            Log.e("DiaryRepo", "Error getting entry", e)
+            null
+        }
     }
 
-    suspend fun insertEntry(entry: DiaryEntry) {
-        Log.d("DiaryRepo", "insertEntry: $entry")
-        diaryEntryDao.insert(entry)
-        Log.d(
-            "DiaryRepo",
-            "insertEntry done, id = ${entry.id}"
-        ) // но entry.id после вставки может обновиться, если autoGenerate
+
+    suspend fun insertEntry(entry: DiaryEntry): Long = diaryEntryDao.insert(entry)
+
+    suspend fun addPhoto(entryId: Long, path: String) {
+        photoDao.insert(Photo(entryId = entryId, filePath = path))
     }
 
         suspend fun updateEntry(entry: DiaryEntry) {
