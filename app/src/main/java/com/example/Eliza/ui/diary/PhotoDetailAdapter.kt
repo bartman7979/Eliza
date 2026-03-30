@@ -47,7 +47,7 @@ class PhotoDetailAdapter : RecyclerView.Adapter<PhotoDetailAdapter.PhotoViewHold
 
             itemView.setOnClickListener {
                 val file = File(photo.filePath)
-                Toast.makeText(itemView.context, "Клик! Файл: ${file.absolutePath}", Toast.LENGTH_LONG).show()
+                //Toast.makeText(itemView.context, "Клик! Файл: ${file.absolutePath}", Toast.LENGTH_LONG).show()
                 if (file.exists()) {
                     try {
                         val uri = FileProvider.getUriForFile(
