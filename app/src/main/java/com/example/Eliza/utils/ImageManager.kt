@@ -41,7 +41,6 @@ class ImageManager(private val context: Context) {
         R.drawable.cosplay_6,
         R.drawable.sakura_5,
         R.drawable.villiage_1,
-        R.drawable.cosplay_5,
         R.drawable.sakura_4,
         R.drawable.city_7,
         R.drawable.morning_3,
@@ -97,6 +96,12 @@ class ImageManager(private val context: Context) {
         R.drawable.bitch_2,
         R.drawable.sakura_2,
         R.drawable.bitch_1,
+        R.drawable.city_9,
+        R.drawable.auto_1,
+        R.drawable.cosplay_14,
+        R.drawable.city_8,
+        R.drawable.evening_5,
+        R.drawable.evening_4,
         // ... добавь все свои картинки
     )
 

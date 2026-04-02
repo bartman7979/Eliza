@@ -84,6 +84,9 @@ dependencies {
 
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
 
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
